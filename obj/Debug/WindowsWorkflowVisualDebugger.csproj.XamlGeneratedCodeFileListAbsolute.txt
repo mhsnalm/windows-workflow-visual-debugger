@@ -1,3 +1,0 @@
-obj\Debug\_WindowsWorkflowVisualDebugger.g.cs
-obj\Debug\Workflow.g.cs
-obj\Debug\Microsoft.Samples_Workflow_BeforeInitializeComponentHelper.cs

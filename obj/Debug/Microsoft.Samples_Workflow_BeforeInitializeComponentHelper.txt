@@ -1,2 +1,0 @@
-Workflow.g.xaml
-XamlStaticHelperNamespace._XamlStaticHelper
