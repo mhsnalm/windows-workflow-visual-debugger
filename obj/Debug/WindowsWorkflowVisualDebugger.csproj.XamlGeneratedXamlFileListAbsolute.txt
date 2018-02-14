@@ -1,0 +1,2 @@
+obj\Debug\Workflow.g.xaml
+obj\Debug\Microsoft.Samples_Workflow_BeforeInitializeComponentHelper.txt
