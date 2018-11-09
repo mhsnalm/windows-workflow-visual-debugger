@@ -148,6 +148,12 @@ namespace Business.WorkflowDebugger
             });
 
 
+            toolboxControl.Categories.Add(new ToolboxCategory("Primitive Acitivties")
+            {
+                new ToolboxItemWrapper(typeof(InvokeDelegate)),
+                new ToolboxItemWrapper(typeof(InvokeMethod))
+            });
+
             toolboxControl.Categories.Add(new ToolboxCategory("Error Handling Activities")
             {
                 new ToolboxItemWrapper(typeof(TransactionScope)),
