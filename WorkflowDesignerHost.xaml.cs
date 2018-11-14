@@ -1,7 +1,4 @@
-﻿//----------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//----------------------------------------------------------------
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Activities.Presentation;
@@ -24,6 +21,7 @@ using System.Reflection;
 using System.Linq;
 using System.ServiceModel.Activities;
 using System.ServiceModel.Activities.Presentation.Factories;
+using WindowsWorkflowVisualDebugger.Activity;
 
 namespace Business.WorkflowDebugger
 {
@@ -39,7 +37,6 @@ namespace Business.WorkflowDebugger
 
         TextBox tx;
         Dictionary<int, SourceLocation> textLineToSourceLocationMap;
-        int i = 0;
 
         // SourceLocation class is used to identify specific location in a target source code file
         Dictionary<object, SourceLocation> designerSourceLocationMapping = new Dictionary<object, SourceLocation>();
@@ -118,7 +115,8 @@ namespace Business.WorkflowDebugger
             {
                 new ToolboxItemWrapper(typeof(Sequence)),
                 new ToolboxItemWrapper(typeof(WriteLine)),
-                new ToolboxItemWrapper(typeof(Assign))
+                new ToolboxItemWrapper(typeof(Assign)),
+                new ToolboxItemWrapper(typeof(InvokeWebService))
             });
 
             toolboxControl.Categories.Add(new ToolboxCategory("Control Flow Activities")
@@ -148,12 +146,6 @@ namespace Business.WorkflowDebugger
             });
 
 
-            toolboxControl.Categories.Add(new ToolboxCategory("Primitive Acitivties")
-            {
-                new ToolboxItemWrapper(typeof(InvokeDelegate)),
-                new ToolboxItemWrapper(typeof(InvokeMethod))
-            });
-
             toolboxControl.Categories.Add(new ToolboxCategory("Error Handling Activities")
             {
                 new ToolboxItemWrapper(typeof(TransactionScope)),
@@ -169,13 +161,15 @@ namespace Business.WorkflowDebugger
         {
             if (this.WorkflowDesigner == null)
                 return;
-            //this.WorkflowPropertyPanel.Content = this.WorkflowDesigner.PropertyInspectorView;
+
+            this.WorkflowPropertyPanel.Content = this.WorkflowDesigner.PropertyInspectorView;
         }
 
         //Run the Workflow with the tracking participant
         public void RunWorkflow()
         {
-            WorkflowDesigner.Save("Workflow.xaml");
+            WorkflowDesigner.Save(WorkflowFilePath);
+            WorkflowDesigner.Flush();
 
             AddWorkflowDesigner();
 
@@ -267,7 +261,7 @@ namespace Business.WorkflowDebugger
                 this.Dispatcher.Invoke(DispatcherPriority.Render
                     , (Action)(() =>
                 {
-                    this.WorkflowDesigner.DebugManagerView.CurrentLocation = new SourceLocation("Workflow.xaml",1,1,1,10);
+                    this.WorkflowDesigner.DebugManagerView.CurrentLocation = new SourceLocation(WorkflowFilePath, 1,1,1,10);
                 }));
 
             }));
@@ -425,7 +419,7 @@ namespace Business.WorkflowDebugger
         Activity GetRuntimeExecutionRoot()
         {
           
-            Activity root = ActivityXamlServices.Load("Workflow.xaml");
+            Activity root = ActivityXamlServices.Load(WorkflowFilePath);
             WorkflowInspectionServices.CacheMetadata(root);
     
             return root;
@@ -435,7 +429,7 @@ namespace Business.WorkflowDebugger
         Activity GetRootRuntimeWorkflowElement()
         {
           
-            Activity root = ActivityXamlServices.Load("Workflow.xaml");
+            Activity root = ActivityXamlServices.Load(WorkflowFilePath);
             WorkflowInspectionServices.CacheMetadata(root);
             
 

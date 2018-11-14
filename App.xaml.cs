@@ -1,7 +1,4 @@
-﻿//----------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//----------------------------------------------------------------
-using System.Windows;
+﻿using System.Windows;
 using System.Reflection;
 using System;
 using System.Activities.Presentation;
